@@ -3,7 +3,7 @@
 <div id="div2"> </div>
 <div id="div3"> </div>
 
-
+<!--
 <br>
 <br>
 <br>
@@ -80,7 +80,7 @@
 <br>		si sa iti arate in tim preal 
 <br>			cum le interpreteazA
 <br>			exemple de cum va arata quurile
-		
+-->		
 
 <script language='javascript'>"use strict"
 /*
@@ -96,33 +96,60 @@
 main();
 var log =[];
 var loc =[];
-var rasp,turn;
+var rasp;
+var turn=1;
+var quizName;
+
+
 function main(){
 
-	for (var i=0;i<8;i++){
-		console.log(r2(19,20));
-	}		
-	turn =1;
-	callNewQ();
+	showQuizList();
+	//callNewQ();
 }
 
-function r1(i){
-	//returns rnd intre 0 si i INCLUSIV;merge si pt i negativ
-	return 1*(i*Math.random()).toFixed(0);
-}
-function r2(i, j){
-	if(i>j){
-		var x=i;
-		i=j;
-		j=x;
+function showQuizList(){
+	var arr=[
+	"impartiriFaraRest",
+	"impartiriCuRest",
+	"inmultiriSiAdunari",
+	"inmultiriDeNegative",
+	"inmultiriSimple",
+	"adunariSimple",
+	"adunariCuTinem1",
+	"sumeDeNegative",
+	];
+	var txt="";
+	arr.forEach (m);
+	function m(s,i){
+		txt+="<br>"+"<span "
+			+'onclick="quizName=\''+s+'\'; callNewQ();" '
+			+" ><u>"
+			+s
+			+"</u></span>";
 	}
-	//returns rnd intre i si j INCLUSIV;merge si pt i si j negative
-	return  1*((i+(j-i)*Math.random()).toFixed(0));
+	
+	console.log(txt);
+	document.getElementById("div1").innerHTML=txt;
+
 }
+
+
+
 
 function callNewQ(){
+	var q1;
+	switch(quizName){
+		case "inmultiriSiAdunari": 	q1=inmultiriSiAdunari();break;
+		case "adunariCuTinem1": 	q1=adunariCuTinem1();break;
+		case "adunariSimple": 		q1=adunariSimple();break;
+		case "inmultiriSimple": 	q1=inmultiriSimple();break;
+		case "inmultiriDeNegative": q1=inmultiriDeNegative();break;
+		case "sumeDeNegative": 		q1=sumeDeNegative();break;
+		case "impartiriFaraRest": 	q1=impartiriFaraRest();break;
+		case "impartiriCuRest": 	q1=impartiriCuRest();break;
+	}
+
 	document.getElementById("div0").innerHTML=log+"<br><br>";
-	var q1= adunariCuTinem1();
 	//afiseaza q si versiuni
 	document.getElementById("div2").innerHTML=turn+".) "+q1.q+"<br><br>";
 	var d1,d2;
@@ -516,7 +543,19 @@ function logAnswer(i){
 	else {log.push(i);}
 }
 
-
+function r1(i){
+	//returns rnd intre 0 si i INCLUSIV;merge si pt i negativ
+	return 1*(i*Math.random()).toFixed(0);
+}
+function r2(i, j){
+	if(i>j){
+		var x=i;
+		i=j;
+		j=x;
+	}
+	//returns rnd intre i si j INCLUSIV;merge si pt i si j negative
+	return  1*((i+(j-i)*Math.random()).toFixed(0));
+}
 
 
 </script>
