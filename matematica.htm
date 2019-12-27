@@ -1,0 +1,522 @@
+<div id="div0"> </div>
+<div id="div1"> </div>
+<div id="div2"> </div>
+<div id="div3"> </div>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>prof/parinte poate: 
+-vede ce activitate are elevul: ce quizuri a lucrat si ce scoruri in ce zile
+-da teme care sa ii apara elevului si masura in care le-a indeplinitL eg quiz xyz 4zile/sapt min provcentaj nealeator, minim o serie de 10 consecutive sau peste 50 turns peste 70% corecte
+<br>elevi opt solicita inscriere la un grup al uni profesor
+<br>profesor poate invita elevi
+<br>autentificare
+<br>fiecare user are un fisier in care se stocheaza datele lui, ac fisier se salveaza pe parcursul sesiunii
+<br>24=[x*y] 3*5 3*8 4*8
+<br>divizibilitate, factori primi,cmmdc cmmmc
+<br>operatii cu puteri
+<br>la adunare cu nivelui - param 0aleator/progresie,1-9 un anumit set de parametri
+<br>x++*/y=z z=x++*/y aleator/f de param pasat functei: semn, necunoscuta, =z/z= 
+<br>ordinea ecuatilor
+<br>ad arraray [programaryPerTurn[t] ] -> la turn t sa programeze intrebarea x-fie repetarea intr curente fie o intrebare crelata(de ex a ales 5*7=x36 sa il intrebe 6*?=36 )
+<br>add random de array r3([5,7,9])sa leaga una din val
+<br>add [array de posibile variante de raspuns inselatoare] eg la -3*-5 
+-arg metoda generala: rNR/eNR1-NR2 + - +- +* +*/
+<br>identifiers 
+<br>	r3 +- r5
+<br>random number: 
+<br>	r nr 
+<br>		r5 0to5 r-5 -5to0
+<br>		r+-5 -5to5
+<br>	r nr1-nr2 
+<br>		r-5-7 -5to7
+<br>		r-5--7 -5to+7
+<br>		daca nr2 neg atunci rnr1--nr2
+<br>	daca sunt valori zecimale sa fie interval cu atatea zecimale cate sunt cele mai multe la unul dintre termenii expresiei	
+<br>semne: 
+<br>	+ daca e un singur semn e ala
+<br>	+- daca sunt mai mlte alege aleator din ele
+<br>	
+<br>identifiers pt random nr sau random semn precedent:
+<br>	n3-identifier pt numere al catelea r de la st la dr
+<br>		de ex daca tre sa folosesti val lui pt alt [interval de random] sau pt alta [constanta] 
+<br>	s4 - al 4lea semn de la stanga
+<br>	s!4 - INVERSUL semnului 4 de la stanga
+<br>	
+<br>constante:	
+<br>	cn3s!2n1
+<br>	
+<br>marcaj pt necunoscute
+<br>	la r si la c si la s (random si constante si semne)
+<br>	poti pune inainte un x astfel incat acest semn sa fie variabila de ghicit
+<br>	
+<br>
+<br>cum sa construiasca variantele incorecte de raspuns
+<br>	intr-un interval de +-5 de la rasp corect
+<br>	
+<br>features fezabile 
+<br>
+<br>features dorite
+<br>	intrebari tip cum verifici rez la impartirea 45:7=4r3 [4*7+3=45][3*4+45=3]recombinarid'astea
+<br>	sa ii poti preciza si rata de progres
+<br>			de ex daca are 80% succes la prevoius 15 repetitii
+<br>				atunci sa modifice intervalul pt variabila 1,2, sau 3 ai sa il creasca in sus in jos,limita inf, limita sup
+<br>	daca a gersit un q 
+<br>		atunci acelasi q reprograma tpeste 2-3 x turns
+<br>		sau
+<br>		atunci sa ii creeze un q complementar (sau mai multe) ornind de la valori
+<br>	sa verificae daca egalitatea/inegalitatea este corecta
+<br>	sa afiseze 	pe masura ce scrii
+<br>		ddaca sunt greseli in formula
+<br>		 intervalele declarate si optinile de semne
+<br>	sa poti sa faci aceste formule si tu cu un meniu cu butoane, nu doar text
+<br>		si sa iti arate in tim preal 
+<br>			cum le interpreteazA
+<br>			exemple de cum va arata quurile
+		
+
+<script language='javascript'>"use strict"
+/*
+
+
+
+*/
+
+
+
+
+
+main();
+var log =[];
+var loc =[];
+var rasp,turn;
+function main(){
+
+	for (var i=0;i<8;i++){
+		console.log(r2(19,20));
+	}		
+	turn =1;
+	callNewQ();
+}
+
+function r1(i){
+	//returns rnd intre 0 si i INCLUSIV;merge si pt i negativ
+	return 1*(i*Math.random()).toFixed(0);
+}
+function r2(i, j){
+	if(i>j){
+		var x=i;
+		i=j;
+		j=x;
+	}
+	//returns rnd intre i si j INCLUSIV;merge si pt i si j negative
+	return  1*((i+(j-i)*Math.random()).toFixed(0));
+}
+
+function callNewQ(){
+	document.getElementById("div0").innerHTML=log+"<br><br>";
+	var q1= adunariCuTinem1();
+	//afiseaza q si versiuni
+	document.getElementById("div2").innerHTML=turn+".) "+q1.q+"<br><br>";
+	var d1,d2;
+	if(turn%2==0){
+		d1="div1";
+		d2="div3";
+	}else		{
+		d1="div3";
+		d2="div1";
+	}
+	document.getElementById(d1).innerHTML=q1.rh+"<br><br>";
+	document.getElementById(d2).innerHTML=" "+"<br><br>";
+}
+
+function inmultiriSiAdunari(){
+	//sume de negative
+	//ex -2 - -4 = ?
+	// -+3 +- +-6  = n1s1n2
+	var t1,t2,t3,t4;
+	t1=r2(0,10);
+	t2=r2(0,10);
+	t3=r2(-10,10);
+	t4=t1*t2+t3;
+	var q;
+	if(t2>=0){q=t1+"*"+t2;}
+	else	{q=t1+"*"+"("+t2+")";}
+	if(t3>=0){q=q+"+"+t3+" = ";}
+	else	 {q=q+"+"+"("+t3+")"+" = ";}
+	
+	console.log(q);
+	rasp=[1*t4];
+		console.log("rasp="+rasp);
+	for (var i=0;i<3;i++){
+		do{
+			var v=	r2(t4-10,t4+10);
+		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
+		console.log("t3="+t3,"v="+v);
+		rasp.push(v);
+	}
+	//console.log(rasp);
+	loc=[];
+	asigneazaLOCvariante();
+	//alege ordinea in care sa afizeze var de rasp, stiind ca rasp[0] e cea corecta
+
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+
+}
+
+function adunariCuTinem1(){
+	//t1="tinem 1"
+	//0t1 = fara "tinem 1"
+	//2t1 = 2 "tinem 1"
+	//
+	var t1,t2,t3,x1,x2;
+	//gradari:
+		//09 +09 0t1 3+7
+			// t1=r2(0,9);	
+			// t2=r2(0,9-t1);
+		//09 +09 1t1 3+8
+			// t1=r2(0,9);	
+			// t2=r2(10-t1,10);
+		//099 +09 0t1 35+4
+			// x1=r2(0,9);	
+			// t1=r2(1,9)*10+x1;	
+			// t2=r2(0,9-x1);		
+		//099 +09 1t1 35+8
+			// x1=r2(0,9);	
+			// t1=r2(1,9)*10+x1;	
+			// t2=r2(10-x1,10);		
+		//099+099 0t1 			33+44= 77
+			// x1=r2(0,9);	
+			// x2=r2(1,8);	
+			// t1=x2*10+x1;//10-89	
+			// t2=r2(1,9-x2)*10+r2(0,9-x1);						
+		//099+099 1t1 sub 100   33+48= 81
+			// x1=r2(0,9);	
+			// x2=r2(1,8);	
+			// t1=x2*10+x1;//10-89	
+			// t2=r2(1,9-x2)*10+r2(10-x1,9);								
+		//099+099 1t1 peste 100 33+84=117
+			x1=r2(0,9);	
+			x2=r2(1,9);	
+			t1=x2*10+x1;//10-99	
+			t2=r2(10-x2,9)*10+r2(0,9-x1);		
+		// 099+099 2t1 peste 100 33+88=121
+			// x1=r2(0,9);	
+			// x2=r2(1,9);	
+			// t1=x2*10+x1;//10-99	
+			// t2=r2(10-x2,9)*10+r2(0,9-x1);		
+		// pana aici e super decent, ce urmeaza e cam overkill
+		// 100-999+10-99-le-as lasa de-a valma, sunt pritocite in 099+099
+			// t1=r2(100,999);
+			// t2=r2(10,99);
+
+	t3=1*t1+1*t2;
+	var q;
+	if(t2>=0){q=t1+"+"+t2+" = ";}
+	else	{q=t1+"+"+"("+t2+")"+" = ";}
+	console.log(q);
+	rasp=[1*t3];
+		console.log("rasp="+rasp);
+	for (var i=0;i<3;i++){
+		do{
+			var v=	r2(t3-5,t3+5);
+		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
+		console.log("t3="+t3,"v="+v);
+		rasp.push(v);
+	}
+	//console.log(rasp);
+	loc=[];
+	asigneazaLOCvariante();
+	//alege ordinea in care sa afizeze var de rasp, stiind ca rasp[0] e cea corecta
+
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+}
+
+
+function adunariSimple(){
+	//sume de negative
+	//ex -2 - -4 = ?
+	// -+3 +- +-6  = n1s1n2
+	var t1,t2,t3;
+	t1=r2(11,50);
+	t2=r2(11,50);
+	t3=1*t1+1*t2;
+	var q;
+	if(t2>=0){q=t1+"+"+t2+" = ";}
+	else	{q=t1+"+"+"("+t2+")"+" = ";}
+	console.log(q);
+	rasp=[1*t3];
+		console.log("rasp="+rasp);
+	for (var i=0;i<3;i++){
+		do{
+			var v=	r2(t3-5,t3+5);
+		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
+		console.log("t3="+t3,"v="+v);
+		rasp.push(v);
+	}
+	//console.log(rasp);
+	loc=[];
+	asigneazaLOCvariante();
+	//alege ordinea in care sa afizeze var de rasp, stiind ca rasp[0] e cea corecta
+
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+
+}
+
+function inmultiriSimple(){
+	//sume de negative
+	//ex -2 - -4 = ?
+	// -+3 +- +-6  = n1s1n2
+	var t1,t2,t3;
+	t1=r2(0,10);
+	t2=r2(0,10);
+	t3=t1*t2;
+	var q;
+	if(t2>=0){q=t1+"*"+t2+" = ";}
+	else	{q=t1+"*"+"("+t2+")"+" = ";}
+	console.log(q);
+	rasp=[1*t3];
+		console.log("rasp="+rasp);
+	for (var i=0;i<3;i++){
+		do{
+			var v=	r2(t3-10,t3+10);
+		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
+		console.log("t3="+t3,"v="+v);
+		rasp.push(v);
+	}
+	//console.log(rasp);
+	loc=[];
+	asigneazaLOCvariante();
+	//alege ordinea in care sa afizeze var de rasp, stiind ca rasp[0] e cea corecta
+
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+
+}
+
+function inmultiriDeNegative(){
+	//sume de negative
+	//ex -2 - -4 = ?
+	// -+3 +- +-6  = n1s1n2
+	var t1,t2,t3;
+	t1=r2(-10,10);
+	t2=r2(-10,10);
+	t3=t1*t2;
+	var q;
+	if(t2>=0){q=t1+"*"+t2+" = ";}
+	else	{q=t1+"*"+"("+t2+")"+" = ";}
+	console.log(q);
+	rasp=[1*t3];
+		console.log("rasp="+rasp);
+	for (var i=0;i<3;i++){
+		do{
+			var v=	r2(t3-100,t3+100);
+		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
+		console.log("t3="+t3,"v="+v);
+		rasp.push(v);
+	}
+	//console.log(rasp);
+	loc=[];
+	asigneazaLOCvariante();
+	//alege ordinea in care sa afizeze var de rasp, stiind ca rasp[0] e cea corecta
+
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+
+}
+
+function sumeDeNegative(){
+	//sume de negative
+	//ex -2 - -4 = ?
+	// -+3 +- +-6  = n1s1n2
+	var t1,t2,t3;
+	t1=r2(-3,3);
+	t2=r2(-6,6);
+	var x=r1(1);//daca x e 0 atunci semnul e +; daca e 1  atunci -
+	var s="";
+	//if(x==0){t3=(parseInt(t1)+parseInt(t2));s="+";}
+	if(x==0){t3=t1+t2;s="+";}
+	else	{t3=t1-t2;s="-";}	
+
+	var q;
+	if(t2>0){q=t1+s+t2+" = ";}
+	else	{q=t1+s+"("+t2+")"+" = ";}
+	console.log(q);
+	rasp=[1*t3];
+		console.log("rasp="+rasp);
+	for (var i=0;i<3;i++){
+		do{
+			var v=	r2(t3-3,t3+3);
+		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
+		console.log("t3="+t3,"v="+v);
+		rasp.push(v);
+	}
+	//console.log(rasp);
+	loc=[];
+	asigneazaLOCvariante();
+	//alege ordinea in care sa afizeze var de rasp, stiind ca rasp[0] e cea corecta
+
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+
+}
+
+
+
+function impartiriFaraRest(){
+	//impartiri fara rest
+	//ex 14:2=7
+	//0-100 : 0-10 = t1/t2 rest t1 - t2*t3
+	var t2=r2(1,10);
+	var t3=r2(1,10);
+	var t1=t2*t3;
+
+	var q=t1+" : "+t2+" = ";//+t3+" rest "+t4;
+	console.log(q);
+	rasp=[t3];
+	for (var i=0;i<3;i++){
+		do{
+			var v=	r2(t3-5,t3+5);
+		console.log("t3="+t3,"v="+v);
+			//v=	r2((t3>5 ? t3-5 : 0),t3+5);
+		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
+		rasp.push(v);
+	}
+	//console.log(rasp);
+	loc=[];
+	asigneazaLOCvariante();
+	//alege ordinea in care sa afizeze var de rasp, stiind ca rasp[0] e cea corecta
+
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+}
+
+
+function impartiriCuRest(){
+	//impartiri cu rest
+	//ex 15:2=7 rest 1
+	//0-100 : 0-10 = t1/t2 rest t1 - t2*t3
+	var t1,t2,t3,t4;
+	t1=r1(50);
+	t2=r2(1,10);
+	t3=Math.trunc(t1/t2);//trunc elimina virgula si ce e dupa ea
+	t4=t1%t2;
+	var q=t1+" : "+t2+" = ";//+t3+" rest "+t4;
+	console.log(q);
+	rasp=[t3+" rest "+t4];
+	var v;
+	for (var i=0;i<2;i++){
+		do{
+			v=	r2((t3>3 ? t3-3 : 0),t3+3)
+				+" rest "+r2(0,t4+4);
+		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
+		console.log("n" +v);
+		rasp.push(v);
+	}
+	//console.log(rasp);
+	loc=[];
+	asigneazaLOCvariante();
+	//alege ordinea in care sa afizeze var de rasp, stiind ca rasp[0] e cea corecta
+	
+
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+}
+
+function randCuVarianteDeRaspuns(){
+	//creeaza raspuns html pt mouseover
+	var rh='';
+	for (var i=0;i<rasp.length;i++){
+		rh+='<span ';
+		if(loc[i]==0){//e varianta corecta
+			rh+=` onmouseover=" this.style.backgroundColor='yellow';  
+			raspCorect(); 
+			" `;
+		}
+		else{//e o varianta incorecta
+			rh+=' onmouseover="raspGresit();" ';
+			rh+=` onmouseenter="this.style.backgroundColor='black';" `;
+			rh+=` onmouseout="this.style.backgroundColor='white';" `;
+			//rh+=` onmouseenter="console.log('111')" `;
+		}
+		rh+='">[';
+		rh+=rasp[loc[i]];
+		rh+=']</span> '+'&nbsp;&nbsp;' ;
+	
+	}
+	return rh;
+}
+
+function asigneazaLOCvariante(){
+	//alege ordinea in care sa afizeze var de rasp, stiind ca rasp[0] e cea corecta
+	var v;
+	for (var i=0;i<rasp.length;i++){
+		do{
+			v=r1(rasp.length-1);
+		}while(loc.indexOf(v)!=-1);
+		loc.push(v);
+	//console.log(loc);
+	}
+}
+	
+function raspCorect(){
+	console.log("bravo!");
+	logAnswer(1);
+	turn++;
+	callNewQ();
+}
+
+function raspGresit(){
+	console.log("try again!");
+	logAnswer(0);
+}	
+
+function logAnswer(i){
+	//daca la acest turn am un raspuns, nu mia trec nimic
+	if(log.length==turn){return;}
+	else {log.push(i);}
+}
+
+
+
+
+</script>
