@@ -17,7 +17,8 @@
 
 
 
-<div id="div0"> </div>
+<div id="divStatistici"> </div>
+<div id="divLog"> </div>
 <div id="div1"> </div>
 <div id="div2"> </div>
 <div id="div3"> </div>
@@ -25,12 +26,12 @@
 <!--
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+<br>in dreptul fiecarui nume de functie sa afiseze nr de qs si pocentajul ptziua curenta
+<br>afiseaza qs rasp si variante, cel crecte cu galben, cele gresite cu rosu-daca apesi pe buton sa le vezi sa iti schimbe intrbarea curenta
+<br>bara patratele to complete [last ten consecutive]
+<br>ordinea operatiilor-variante: cu paranteze vs fara paranteze, e1 =3/4/5 vs e1/e2/e3 = 7
+<br>field %corecte / total., lat 10,20 30
+<br>buton [back to menu list]
 <br>prof/parinte poate: 
 -vede ce activitate are elevul: ce quizuri a lucrat si ce scoruri in ce zile
 -da teme care sa ii apara elevului si masura in care le-a indeplinitL eg quiz xyz 4zile/sapt min provcentaj nealeator, minim o serie de 10 consecutive sau peste 50 turns peste 70% corecte
@@ -113,7 +114,7 @@
 
 
 main();
-var log =[];
+var logRaspunsuri =[];
 var loc =[];
 var rasp;
 var turn=1;
@@ -147,7 +148,7 @@ function showQuizList(){
 			+"</u></span>";
 	}
 	
-	console.log(txt);
+	//console.log(txt);
 	document.getElementById("div1").innerHTML=txt;
 
 }
@@ -168,7 +169,7 @@ function callNewQ(){
 		case "impartiriCuRest": 	q1=impartiriCuRest();break;
 	}
 
-	document.getElementById("div0").innerHTML=log+"<br><br>";
+	
 	//afiseaza q si versiuni
 	document.getElementById("div2").innerHTML=turn+".) "+q1.q;//+"<br><br>";
 	var d1,d2;
@@ -180,7 +181,39 @@ function callNewQ(){
 		d2="div1";
 	}
 	document.getElementById(d1).innerHTML=q1.rh;
-	document.getElementById(d2).innerHTML="<table><tr><td>&nbsp;</table>";
+	document.getElementById(d2).innerHTML="<table><tr><td>&nbsp;</table>";//tabel gol care sa mentina constanta [distanta de sus la care se afiseaza q ]
+	
+	afiseazaStatistici();
+}
+
+function afiseazaStatistici(){
+	//afisare statistici in "divStatistici"
+	
+	if (logRaspunsuri.length==0)return;
+	
+	var procentPerToate;
+	var procentPer10;
+	var len=logRaspunsuri.length;
+	var ttot=0,t10=0;
+	
+	for (var i=len-1;i>=0;i--){
+		ttot+=logRaspunsuri[i];
+		if(len>=10 && i>len-11){
+			t10+=logRaspunsuri[i];
+		}
+	}
+	
+	procentPerToate=(ttot/len*100).toFixed(0);
+	procentPer10=(t10/10*100).toFixed(1);
+	
+	var txt="";
+	txt+=logRaspunsuri;
+	txt+="<br>Corectitudine raspunsuri<br>Pt. toate: "+procentPerToate+"%";
+	if(len>=10){
+		txt+="<br> Pt. ultimele zece: "+procentPer10+"%";
+	}	
+	
+	document.getElementById("divStatistici").innerHTML=txt;
 }
 
 function inmultiriSiAdunari(){
@@ -451,12 +484,12 @@ function impartiriFaraRest(){
 	var t1=t2*t3;
 
 	var q=t1+" : "+t2+" = ";//+t3+" rest "+t4;
-	console.log(q);
+	// console.log(q);
 	rasp=[t3];
 	for (var i=0;i<3;i++){
 		do{
 			var v=	r2(t3-5,t3+5);
-		console.log("t3="+t3,"v="+v);
+		// console.log("t3="+t3,"v="+v);
 			//v=	r2((t3>5 ? t3-5 : 0),t3+5);
 		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
 		rasp.push(v);
@@ -547,23 +580,23 @@ function asigneazaLOCvariante(){
 }
 	
 function raspCorect(){
-	console.log("bravo!");
+	// console.log("bravo!");
 	logAnswer(1);
 	turn++;
 	callNewQ();
 }
 
 function raspGresit(){
-	console.log("try again!");
+	// console.log("try again!");
 	logAnswer(0);
 }	
 
 function logAnswer(i){
 	//daca la acest turn am un raspuns, nu mia trec nimic
-	if(log.length==turn){return;}
-	else {log.push(i);}
+	if(logRaspunsuri.length==turn){return;}
+	else {logRaspunsuri.push(i);}
 }
-
+  
 function r1(i){
 	//returns rnd intre 0 si i INCLUSIV;merge si pt i negativ
 	return 1*(i*Math.random()).toFixed(0);
