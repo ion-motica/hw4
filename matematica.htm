@@ -482,13 +482,33 @@ function adunariCuTinem1(){
 	console.log(q);
 	rasp=[1*t3];
 		console.log("rasp="+rasp);
+
+	var raspunsuriIspititoare=[];
+
+
+	// raspunsuriIspititoare.push(t3+ra([-10,10]));
+	raspunsuriIspititoare.push(t3+10);
+	raspunsuriIspititoare.push(t3-10);
+	raspunsuriIspititoare.push(t3+r2(-3,3));
+	raspunsuriIspititoare.push(t3+ra([-10,10])+r2(-3,3));
+	raspunsuriIspititoare.push(t3+ra([-10,10])+r2(-3,3));
+	console.log("ri="+raspunsuriIspititoare);
+	removeDuplicates(raspunsuriIspititoare);
+	console.log("ri="+raspunsuriIspititoare);
+	var v;
 	for (var i=0;i<3;i++){
 		do{
-			var v=	r2(t3-5,t3+5);
+			if(rasp.length<raspunsuriIspititoare.length){//daca-s egale ins ca au fost deja bagate toate raspIsp
+				v=ra(raspunsuriIspititoare);//ia un elem rnd din raspIsp
+			}else{	
+				var v=	r2(t3-5,t3+5);//o valoare aleatoare
+			}	
+			//console.log(v);
 		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
-		console.log("t3="+t3,"v="+v);
+		// console.log("t3="+t3,"v="+v);
 		rasp.push(v);
 	}
+	
 	//console.log(rasp);
 	loc=[];
 	asigneazaLOCvariante();
@@ -520,8 +540,9 @@ function adunariSimple(){
 	var raspunsuriIspititoare=[];
 
 
-	raspunsuriIspititoare.push(t3+10);
-	raspunsuriIspititoare.push(t3-10);
+	raspunsuriIspititoare.push(t3+ra([-10,10]));
+	// raspunsuriIspititoare.push(t3+10);
+	// raspunsuriIspititoare.push(t3-10);
 	raspunsuriIspititoare.push(t3+r2(-3,3));
 	raspunsuriIspititoare.push(t3+ra([-10,10])+r2(-3,3));
 	raspunsuriIspititoare.push(t3+ra([-10,10])+r2(-3,3));
