@@ -1,7 +1,5 @@
 <html>
 <head>
-	bbb
-	aaaaa
 	<style>
 		table, tr, td {
 			//border: 1px solid black;
@@ -28,6 +26,11 @@
 <!--
 <br>
 <br>
+<br>
+<br>
+<br>
+<br>quiz patrate pt 1-30 si invers
+<br>la inmultiri simple controls pt t1 si t2: intrvale de alegere-dropdown list simle sau direcy pt 1-20
 <br>in dreptul fiecarui nume de functie sa afiseze nr de qs si pocentajul ptziua curenta
 <br>afiseaza qs rasp si variante, cel crecte cu galben, cele gresite cu rosu-daca apesi pe buton sa le vezi sa iti schimbe intrbarea curenta
 <br>bara patratele to complete [last ten consecutive]
@@ -124,13 +127,29 @@ var quizName;
 
 
 function main(){
-
-	showQuizList();
-	//callNewQ();
+	//functionare normala:
+		showQuizList();
+	//testare
+		//testEcuatiiCuONecunoscuta();
 }
+
+function testEcuatiiCuONecunoscuta(){
+	
+	var q1;
+	for (var i=0;i<10;i++){
+		//afiseaza q si raspuns	
+		q1=ecuatiiCuONecunoscuta();
+		//console.log(q1.q, "X="+q1.rCorect);
+	}
+
+
+};
 
 function showQuizList(){
 	var arr=[
+	"ecuatiiCuONecunoscuta",
+	"inmultiriPeCatOri7",
+	"adunariDeMultipli",
 	"impartiriFaraRest",
 	"impartiriCuRest",
 	"inmultiriSiAdunari",
@@ -161,6 +180,9 @@ function showQuizList(){
 function callNewQ(){
 	var q1;
 	switch(quizName){
+		case "ecuatiiCuONecunoscuta":q1=ecuatiiCuONecunoscuta();break;
+		case "inmultiriPeCatOri7": 	q1=inmultiriPeCatOri7();break;
+		case "adunariDeMultipli": 	q1=adunariDeMultipli();break;
 		case "inmultiriSiAdunari": 	q1=inmultiriSiAdunari();break;
 		case "adunariCuTinem1": 	q1=adunariCuTinem1();break;
 		case "adunariSimple": 		q1=adunariSimple();break;
@@ -206,10 +228,10 @@ function afiseazaStatistici(){
 	}
 	
 	procentPerToate=(ttot/len*100).toFixed(0);
-	procentPer10=(t10/10*100).toFixed(1);
+	procentPer10=(t10/10*100).toFixed(0);
 	
 	var txt="";
-	txt+=logRaspunsuri;
+	//txt+=logRaspunsuri;
 	txt+="<br>Corectitudine raspunsuri<br>Pt. toate: "+procentPerToate+"%";
 	if(len>=10){
 		txt+="<br> Pt. ultimele zece: "+procentPer10+"%";
@@ -217,6 +239,156 @@ function afiseazaStatistici(){
 	
 	document.getElementById("divStatistici").innerHTML=txt;
 }
+
+
+
+function ecuatiiCuONecunoscuta(){
+	/*
+	t1 +-* / t2 = t3
+	variatii 
+		semn= /+-*
+		care va fi necunoscuta t1/t2
+		t3 in st sau dr lui =: ...=t3 sau t3=...
+	*/
+	var semn;
+	// semn=ra(['-']	);//partial
+	semn= ra(['+','-','*','/']	);//complet
+	var t1=r2(1,5);
+	var t2=r2(1,5);
+	if (semn=="/"){	t1=t2*r2(1,5);	}
+	//daca nu stie inca nr negative
+		if (semn=="-" & t1<t2){	var temp=t1;t1=t2;t2=temp;	}
+	
+	var t3;
+	// calculare t3
+		switch(semn){
+			case '+': t3=t1+t2; break;
+			case '-': t3=t1-t2; break;
+			case '*': t3=t1*t2; break;
+			case '/': t3=t1/t2; break;
+		}
+	
+console.log();
+console.log("=====================");
+//console.log(t1+semn+t2+"="+t3);
+	//compune intrebarea eg 3+x=5
+	var q="";
+		//compune partea cu [t1 s t2] eg 3+x
+		var necunoscuta = 	ra([ "t1" , "t2"]);
+		var tCunoscut;//valoarea termenului care NU e necunoscuta - e folosita mai jos la [compune raspunsul]
+		if(necunoscuta=="t1"){
+			tCunoscut=t2;
+			q+="X "+semn+" ";
+			//daca t2 e cu minus baga-l in paranteze
+			if (t2<0)	 { q+="("+t2+")";	}
+			else		 { q+=t2;			}
+		}
+		if(necunoscuta=="t2"){
+			tCunoscut=t1;
+			q+=t1+" "+semn+" X";
+		}
+
+		//pune ...=t3 sau t3=...	
+		var pozititeT3 = ra([ "stanga" , "dreapta"]);// t3=... sau ...=t3
+		if(pozititeT3=="st"){q=t3+" = "+q;}
+		else				{q=q+" = "+t3;}
+console.log(q);
+	// compune rCorect
+		// [x=3] sau [x=5-2]
+		var rCorect;
+		var tipRaspuns= ( r2(2,2)==1 ? "numar" : "expresie" );
+		if (tipRaspuns=="numar"){
+			if(necunoscuta=="t1"){rCorect=t1;}
+			if(necunoscuta=="t2"){rCorect=t2;}
+		}
+		if (tipRaspuns=="expresie"){
+			if(semn=="+"){
+				rCorect=t3+" - "+tCunoscut;
+			}
+			if(semn=="*"){
+				rCorect=t3+" / "+tCunoscut;
+			}
+			if(semn=="-"){
+				if(necunoscuta=="t1"){rCorect=t3+" + "+t2;}
+				if(necunoscuta=="t2"){rCorect=t1+" - "+t3;}
+			}
+			if(semn=="/"){
+				if(necunoscuta=="t1"){rCorect=t3+" * "+t2;}
+				if(necunoscuta=="t2"){rCorect=t1+" / "+t3;}
+			}			
+		}
+console.log(rCorect);
+
+	rasp=[rCorect];//t3 e rasp corect si e adaugat la index 0 in arrayul [rasp]
+	
+	//compune variantele de raspuns
+	var t21,t22;
+	var v;
+	for (var i=0;i<3;i++){
+		do{	
+			
+			if(ra(true,false))  {t21=t3;t22=tCunoscut;}
+			else				{t21=tCunoscut;t22=t3;}
+			t22=ra([-1,1])*t22;
+			if(t22<0){t22="("+t22+")";}
+			v=	ra([-1,1])*t21 
+				+ ra([' + ',' - ',' * ',' / 	'])
+				+t22;
+		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
+		rasp.push(v);
+	}
+console.log(rasp);
+	loc=[];
+	asigneazaLOCvariante();
+	//alege ordinea in care sa afizeze var de rasp, stiind ca rasp[0] e cea corecta
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+		//rCorect:rCorect//pt testing
+	}
+	
+
+}
+
+function adunariDeMultipli(){
+	//alege un inmultitor, 
+	// de ex tabla inmultirii cu 16
+	//si vom avea ex 16*4=?...
+	// si 32+64=?
+	// 1-20*1-20
+	var x0,x1,x2,t1,t2,t3,t4;
+	x0=16;//baza pt inmultiri
+	
+	x2=r2(1,4);
+	x1=r2(1,20-x2);
+	t1=x0*x1;
+	
+	t2=x0*x2;
+	
+	t3=t1+t2;
+	var q=t1+"+"+t2+"=";
+	rasp=[t3];//t3 e rasp corect si e adaugat laindex 0 in arrayul [rasp]
+	for (var i=0;i<3;i++){
+		do{
+			var v=	x0*r2(x1+x2-3,x1+x2+3);
+		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
+		rasp.push(v);
+	}
+	//console.log(rasp);
+	loc=[];
+	asigneazaLOCvariante();
+	//alege ordinea in care sa afizeze var de rasp, stiind ca rasp[0] e cea corecta
+
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+
+}
+
 
 function inmultiriSiAdunari(){
 	//sume de negative
@@ -370,8 +542,8 @@ function inmultiriSimple(){
 	//ex -2 - -4 = ?
 	// -+3 +- +-6  = n1s1n2
 	var t1,t2,t3;
-	t1=r2(0,20);
-	t2=r2(12,12);
+	t1=r2(2,10);
+	t2=r2(2,10);
 	t3=t1*t2;
 	var q;
 	if(t2>=0){q=t1+"*"+t2+" = ";}
@@ -381,7 +553,7 @@ function inmultiriSimple(){
 		console.log("rasp="+rasp);
 	for (var i=0;i<3;i++){
 		do{
-			var v=	r2(t3-10,t3+10);
+			var v=	t2*r2(t1-3,t1+3);
 		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
 		console.log("t3="+t3,"v="+v);
 		rasp.push(v);
@@ -392,6 +564,43 @@ function inmultiriSimple(){
 	//alege ordinea in care sa afizeze var de rasp, stiind ca rasp[0] e cea corecta
 
 	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+
+}
+
+
+function inmultiriPeCatOri7(){
+	
+	//sume de negative
+	//ex -2 - -4 = ?
+	// -+3 +- +-6  = n1s1n2
+	var t1,t2,t3;
+	t1=r2(1,20);
+	t2=r2(16,16);
+	t3=t1*t2;
+	var q;
+	q=t3+"= ? * "+t2;
+	
+	console.log(q);
+	rasp=[1*t1];
+		console.log("rasp="+rasp);
+	for (var i=0;i<3;i++){
+		do{
+			var v=	r2(t1-3,t1+3);
+		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
+		rasp.push(v);
+	}
+	console.log(rasp);
+	loc=[];
+	asigneazaLOCvariante();
+	//alege ordinea in care sa afizeze var de rasp, stiind ca rasp[0] e cea corecta
+
+	//returneaza
+	
 	return{
 		q:q,
 		rh:randCuVarianteDeRaspuns()
@@ -454,14 +663,31 @@ function sumeDeNegative(){
 	console.log(q);
 	rasp=[1*t3];
 		console.log("rasp="+rasp);
+	
+	var raspunsuriIspititoare=[];
+		var t1a=(t1<0 ? -1*t1 : t1);//valoarea absoluta a lui t1
+		var t2a=(t2<0 ? -1*t2 : t2);
+		raspunsuriIspititoare.push(t1a+t2a);
+		raspunsuriIspititoare.push(-1*t1a-t2a);
+		raspunsuriIspititoare.push(-1*t1a+t2a);
+		raspunsuriIspititoare.push(t1a-t2a);
+		console.log("ri="+raspunsuriIspititoare);
+		removeDuplicates(raspunsuriIspititoare);
+		console.log("ri="+raspunsuriIspititoare);
+	var v;
 	for (var i=0;i<3;i++){
 		do{
-			var v=	r2(t3-3,t3+3);
+			if( /*(r1(10000)<9999)&*/rasp.length<raspunsuriIspititoare.length){//daca-s egale ins ca au fost deja bagate toate raspIsp
+				v=ra(raspunsuriIspititoare);//ia un elem rnd din raspIsp
+			}else{	
+				v=	r2(t3-3,t3+3);//o valoare aleatoare
+			}	
+			//console.log(v);
 		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
-		console.log("t3="+t3,"v="+v);
+		// console.log("t3="+t3,"v="+v);
 		rasp.push(v);
 	}
-	//console.log(rasp);
+	console.log("rasp="+rasp);
 	loc=[];
 	asigneazaLOCvariante();
 	//alege ordinea in care sa afizeze var de rasp, stiind ca rasp[0] e cea corecta
@@ -594,7 +820,7 @@ function raspGresit(){
 }	
 
 function logAnswer(i){
-	//daca la acest turn am un raspuns, nu mia trec nimic
+	//daca la acest turn am un raspuns, nu mai trec nimic
 	if(logRaspunsuri.length==turn){return;}
 	else {logRaspunsuri.push(i);}
 }
@@ -603,15 +829,40 @@ function r1(i){
 	//returns rnd intre 0 si i INCLUSIV;merge si pt i negativ
 	return 1*(i*Math.random()).toFixed(0);
 }
-function r2(i, j){
+function r2(i, j){//returns rnd intre i si j INCLUSIV;merge si pt i si j negative
 	if(i>j){
-		var x=i;
-		i=j;
-		j=x;
+		var x=i;i=j;j=x;
 	}
-	//returns rnd intre i si j INCLUSIV;merge si pt i si j negative
+	
 	return  1*((i+(j-i)*Math.random()).toFixed(0));
 }
 
+function ra(arr){
+	//returns a random element of the array passed as argument
+	var randomIndex=r2(0,arr.length-1);
+	return arr[randomIndex];
+}
 
+
+function operatorInvers(o){
+	switch(o){
+		case "+": return "-"; break;
+		case "-": return "+"; break;
+		case "*": return "/"; break;
+		case "/": return "*"; break;
+		default: return "???"; break;//daca nu e un operator cunoscut
+	}
+}
+
+function removeDuplicates(arr){
+	//elimina elementele duplicat dintr-un arr
+	//daca ai 1 si "1" raman ambele
+	var i2;
+	for(var i=0;i<arr.length-1;i++){
+		while( (i2=arr.indexOf(arr[i],i+1)) !=-1){
+			arr.splice(i2,1);//elimina din arr elem de la index i2
+			//console.log(arr);
+		}
+	}
+}
 </script>
