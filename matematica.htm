@@ -516,11 +516,73 @@ function adunariSimple(){
 	console.log(q);
 	rasp=[1*t3];
 		console.log("rasp="+rasp);
+	
+	var raspunsuriIspititoare=[];
+
+
+	raspunsuriIspititoare.push(t3+10);
+	raspunsuriIspititoare.push(t3-10);
+	raspunsuriIspititoare.push(t3+r2(-3,3));
+	raspunsuriIspititoare.push(t3+ra([-10,10])+r2(-3,3));
+	raspunsuriIspititoare.push(t3+ra([-10,10])+r2(-3,3));
+	console.log("ri="+raspunsuriIspititoare);
+	removeDuplicates(raspunsuriIspititoare);
+	console.log("ri="+raspunsuriIspititoare);
+	var v;
+	for (var i=0;i<3;i++){
+		do{
+			if(rasp.length<raspunsuriIspititoare.length){//daca-s egale ins ca au fost deja bagate toate raspIsp
+				v=ra(raspunsuriIspititoare);//ia un elem rnd din raspIsp
+			}else{	
+				var v=	r2(t3-5,t3+5);//o valoare aleatoare
+			}	
+			//console.log(v);
+		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
+		// console.log("t3="+t3,"v="+v);
+		rasp.push(v);
+	}
+	
+	/*
 	for (var i=0;i<3;i++){
 		do{
 			var v=	r2(t3-5,t3+5);
 		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
 		console.log("t3="+t3,"v="+v);
+		rasp.push(v);
+	}
+	*/
+	
+	//console.log(rasp);
+	loc=[];
+	asigneazaLOCvariante();
+	//alege ordinea in care sa afizeze var de rasp, stiind ca rasp[0] e cea corecta
+
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+
+}
+
+function impartiriSimple(){
+	var t1,t2,t3;
+	t1=r2(0,10);
+	t2=r2(0,10);
+	t3=t1*t2;
+	var q;
+	if(t2>=0){q=t3+":"+t2+" = ";}
+	else	{q=t3+"*"+"("+t2+")"+" = ";}
+	//console.log(q);
+	rasp=[1*t1];
+		//console.log("rasp="+rasp);
+	var v;
+	for (var i=0;i<3;i++){
+		do{
+			v=	r2(t1-3,t1+3);
+		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
+		console.log("t1="+t1,"v="+v);
 		rasp.push(v);
 	}
 	//console.log(rasp);
@@ -537,6 +599,8 @@ function adunariSimple(){
 
 }
 
+
+
 function inmultiriSimple(){
 	//sume de negative
 	//ex -2 - -4 = ?
@@ -548,12 +612,13 @@ function inmultiriSimple(){
 	var q;
 	if(t2>=0){q=t1+"*"+t2+" = ";}
 	else	{q=t1+"*"+"("+t2+")"+" = ";}
-	console.log(q);
+	//console.log(q);
 	rasp=[1*t3];
-		console.log("rasp="+rasp);
+		//console.log("rasp="+rasp);
+	var v;
 	for (var i=0;i<3;i++){
 		do{
-			var v=	t2*r2(t1-3,t1+3);
+			v=	t2*r2(t1-3,t1+3);
 			if (t2==0){v=r2(t1-3,t1+3);}
 		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
 		console.log("t3="+t3,"v="+v);
