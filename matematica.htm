@@ -554,6 +554,7 @@ function inmultiriSimple(){
 	for (var i=0;i<3;i++){
 		do{
 			var v=	t2*r2(t1-3,t1+3);
+			if (t2==0){v=r2(t1-3,t1+3);}
 		}while(rasp.indexOf(v)!=-1)//ca sa nu fie variante duplicat
 		console.log("t3="+t3,"v="+v);
 		rasp.push(v);
