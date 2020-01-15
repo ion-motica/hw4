@@ -147,6 +147,16 @@ function testEcuatiiCuONecunoscuta(){
 
 function showQuizList(){
 	var arr=[
+	"puteri2p3e222",
+	"radicali1_20",
+	"patrate1_20",
+	"factoriPrimiUpTo100",
+	"recunoasteNrPrim",
+	"reguliDivizori",
+	"simplificareFractie",
+	"factorComun",
+	"identificaDivizorulLuiX",
+	"identificaNrDivizibilCuX",
 	"ecuatiiCuONecunoscuta",
 	"inmultiriPeCatOri7",
 	"adunariDeMultipli",
@@ -180,7 +190,17 @@ function showQuizList(){
 function callNewQ(){
 	var q1;
 	switch(quizName){
-		case "ecuatiiCuONecunoscuta":q1=ecuatiiCuONecunoscuta();break;
+		case "puteri2p3e222":		q1=puteri2p3e222();break;
+		case "radicali1_20":		q1=radicali1_20();break;
+		case "patrate1_20":			q1=patrate1_20();break;
+		case "factoriPrimiUpTo100":	q1=factoriPrimiUpTo100();break;
+		case "recunoasteNrPrim":	q1=recunoasteNrPrim();break;
+		case "reguliDivizori":		q1=reguliDivizori();break;
+		case "simplificareFractie":	q1=simplificareFractie();break;
+		case "factorComun":			q1=factorComun();break;
+		case "identificaDivizorulLuiX":		q1=identificaDivizorulLuiX();break;
+		case "identificaNrDivizibilCuX":	q1=identificaNrDivizibilCuX();break;
+		case "ecuatiiCuONecunoscuta":		q1=ecuatiiCuONecunoscuta();break;
 		case "inmultiriPeCatOri7": 	q1=inmultiriPeCatOri7();break;
 		case "adunariDeMultipli": 	q1=adunariDeMultipli();break;
 		case "inmultiriSiAdunari": 	q1=inmultiriSiAdunari();break;
@@ -210,36 +230,474 @@ function callNewQ(){
 	afiseazaStatistici();
 }
 
-function afiseazaStatistici(){
-	//afisare statistici in "divStatistici"
+puteri2p3e222
+
+function puteri2p3e222(){
+	// 2^3=2*2*2
+	// 2*2 2*2*2*2 3*3 3*3*3
 	
-	if (logRaspunsuri.length==0)return;
 	
-	var procentPerToate;
-	var procentPer10;
-	var len=logRaspunsuri.length;
-	var ttot=0,t10=0;
+	//intrebarea
+	var b=r2(2,5);
+	var e=r2(2,5);if(b==e){b++;}//casa nu fie egale baza si exponentul
+	var q=b+"<sup>"+e+"</sup>";
 	
-	for (var i=len-1;i>=0;i--){
-		ttot+=logRaspunsuri[i];
-		if(len>=10 && i>len-11){
-			t10+=logRaspunsuri[i];
+	
+	function ro(semn,b,e){
+		//repeat operation 
+		// ro ("+",3) returneaza "3+3+3"
+		var s=b+"";
+		for(var i=1;i<e;i++){
+			s=s+""+semn+b;
 		}
+		return s;
 	}
 	
-	procentPerToate=(ttot/len*100).toFixed(0);
-	procentPer10=(t10/10*100).toFixed(0);
 	
-	var txt="";
-	//txt+=logRaspunsuri;
-	txt+="<br>Corectitudine raspunsuri<br>Pt. toate: "+procentPerToate+"%";
-	if(len>=10){
-		txt+="<br> Pt. ultimele zece: "+procentPer10+"%";
-	}	
 	
-	document.getElementById("divStatistici").innerHTML=txt;
+
+	//rasp corect la q curenta
+	rasp=[ro("*",b,e)];
+	
+	//alege raspunsuri alternative
+	var v;
+	for (var i=0;i<3;i++){
+		do{
+			v=ra([
+					ro("*",b,e+r2( (e>3?e-3:0),e+2  )),
+					ro("*",e,b+r2( (b>3?b-3:0),b+2  ))
+			
+			
+			]);
+			
+			
+		}while(
+			rasp.indexOf(v)!=-1//v nu e bun daca e deja in rasp[]
+		);
+		rasp.push(v);
+	}
+	console.log("rasp="+rasp);
+	
+	//amesteca variantele de raspuns
+	loc=[];
+	asigneazaLOCvariante();	
+	
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
 }
 
+
+function radicali1_20(){
+	//radical din 25?
+		//semnul radical compus din &radic; si expr de sub el cu overline :
+		//&radic; <span style="text-decoration:overline;">25</span>
+	/*
+	if(tipq=="radical"){	
+		q='&radic; <span style="text-decoration:overline;">'+(x*x)+'</span>';
+		a=x;
+	}
+	*/	
+	
+	//intrebarea
+	var a=r2(0,20);
+	var q=a*a;
+	var q='&radic; <span style="text-decoration:overline;">'+q+'</span>';
+
+	//rasp corect la q curenta
+	rasp=[a];
+	
+	//alege raspunsuri alternative
+	var v;
+	for (var i=0;i<3;i++){
+		do{
+			//ideea e ca variantele sa aiba aceeasi ultima cifra ca si raspunsul corect
+			//deci
+			//iau un nr aleator dar cu ultima cifra ca a lui a
+			v=r2( (a>50 ? a-50 : 0) , a+50 );
+		}while(
+			rasp.indexOf(v)!=-1//v nu e bun daca e deja in rasp[]
+			||
+			(v%10 != a%10)//v nu e bun daca nu are aceeasi ultima cifra ca si a
+		);
+		rasp.push(v);
+	}
+	console.log("rasp="+rasp);
+	
+	//amesteca variantele de raspuns
+	loc=[];
+	asigneazaLOCvariante();	
+	
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+}
+
+
+function patrate1_20(){
+	//3 la patrat?
+		//3<sup>2</sup>
+	//radical din 25?
+		//semnul radical compus din &radic; si expr de sub el cu overline :
+		//&radic; <span style="text-decoration:overline;">25</span>
+	/*
+	if(tipq=="radical"){	
+		q='&radic; <span style="text-decoration:overline;">'+(x*x)+'</span>';
+		a=x;
+	}
+	*/	
+	
+	//intrebarea
+	var t1=r2(0,20);
+	var q=t1+"<sup>2</sup>=";
+
+	//rasp corect la q curenta
+	var t2=t1*t1;
+	rasp=[t2];
+	
+	//alege raspunsuri alternative
+	var v;
+	for (var i=0;i<3;i++){
+		do{
+			//ideea e ca variantele sa aiba aceeasi ultima cifra ca si raspunsul corect
+
+			//iau un nr aleator si ii pun ultima cifra tot c		
+			v=r2( (t2>50 ? t2-50 : 0) , t2+50 );
+			v=v-(v%10);
+			v=v+(t2%10);//fac var sa aiba aceeasi ultima cifra cu raspunsul
+		}while(
+			rasp.indexOf(v)!=-1//v nu e bun daca e deja in rasp[]
+		);
+		rasp.push(v);
+	}
+	console.log("rasp="+rasp);
+	
+	//amesteca variantele de raspuns
+	loc=[];
+	asigneazaLOCvariante();	
+	
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+}
+
+
+function factoriPrimiUpTo100(){
+	//Care este numarul prim?
+	// 4,9,2,20
+	var prime11plus=[ 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97];
+	
+	//intrebarea
+	var x=ra(prime11plus)
+	var t1=x*ra([3,5,7]);
+	var q="Cu ce se divide "+t1+" ?";
+	
+	
+
+	//rasp corect la q curenta
+	rasp=[x];
+	console.log("rasp1="+rasp);
+	
+	//alege raspunsuri alternative
+	var v;
+	for (var i=0;i<3;i++){
+		do{
+			v=ra(prime11plus);
+			//console.log("v="+v);	
+		}while(
+			rasp.indexOf(v)!=-1//v nu e bun daca e deja in rasp[]
+			||
+			t1%v==0//v nu e bun daca t1 se divide cu el
+		);
+		rasp.push(v);
+	}
+	console.log("rasp="+rasp);
+	
+	//amesteca variantele de raspuns
+	loc=[];
+	asigneazaLOCvariante();	
+	
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+}
+
+
+function recunoasteNrPrim(){
+	//Care este numarul prim?
+	// 4,9,2,20
+	var prime=[1,2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97];
+	
+	//intrebarea
+	var q="Care este numarul prim?";
+	
+
+	//rasp corect la q curenta
+	rasp=[ra(prime)];
+	console.log("rasp1="+rasp);
+	
+	//alege raspunsuri alternative
+	var v;
+	for (var i=0;i<3;i++){
+		do{
+			v=r2(1,100);
+			//console.log("v="+v);	
+		}while(
+			rasp.indexOf(v)!=-1//v nu e bun daca e deja in rasp[]
+			||
+			prime.indexOf(v)!=-1//v nu e bun daca e prim
+			||
+			v%2==0//v nu e bun daca e par, pt ca ar fi evident ca nu e prim
+			||
+			v%5==0//v nu e bun daca e divizibil cu 5, pt ca ar fi evident ca nu e prim
+		);
+		rasp.push(v);
+	}
+	console.log("rasp="+rasp);
+	
+	//amesteca variantele de raspuns
+	loc=[];
+	asigneazaLOCvariante();	
+	
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+}
+
+
+function reguliDivizori(){
+	//Un nr este divizibili cu 3 daca...
+	
+	//intrebarea
+	var n=[2,3,4,5,6,9,10,100];
+	var t1=n[r2(0,n.length-1)];
+	var q="Un numar este divizibil cu "+t1+" daca...";
+	
+	//raspunsurile corecte
+	var r=[];
+	r[2]="are ultima cifra para";
+	r[3]="are suma cifrelor multiplu de 3";
+	r[4]="are ultimele 2 cifre multiplu de 4";
+	r[5]="are ultima cifra 5 sau 0";
+	r[6]="este multiplu de 2 si de 3";
+	r[9]="are suma cifrelor multiplu de 9";
+	r[10]="are ultima cifra 0";
+	r[100]="are ultimele doua cifre 00";
+	
+	//rasp corect la q curenta
+	rasp=[r[t1]];
+	console.log("rasp1="+rasp);
+	
+	//alege raspunsuri alternative
+	function getRandomVersion(t1){
+		return ra(
+			[
+			"are ultima cifra "+ra(["para","impara","5 sau 0","0"]),
+			"are ultimele doua cifre "+ra(["pare","impare","5 sau 0","0","00"]),		
+			"are suma cifrelor multiplu de "+ra([t1,3,4,9,r2(1,5)]),
+			"are ultimele 2 cifre multiplu de "+ra([t1,4,9,r2(1,5)])
+			]
+		);
+		
+	}
+	
+	var v;
+	for (var i=0;i<2;i++){
+		do{
+			v=getRandomVersion(t1);
+			//console.log("v="+v);	
+		}while(rasp.indexOf(v)!=-1) 	;
+		rasp.push(v);
+	}
+	console.log("rasp="+rasp);
+
+	loc=[];
+	asigneazaLOCvariante();	
+	
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+}
+
+function simplificareFractie(){
+	// 32+24
+	// 8(4+3) 
+	
+	var x=r2(2,10);
+	var t1=x*r2(1,10);
+	var t2=x*r2(1,10);
+	x=cmmdc(t1,t2);//pt ca cmmdc poate fi mai mare decat x initial
+	var q=t1+" / "+t2+"=...";
+
+	//rasp corect si e adaugat laindex 0 in arrayul [rasp]
+	rasp=[(t1/x)+" / "+(t2/x)];
+	//alege raspunsuri alternative
+	var v,x1,x2;
+	for (var i=0;i<2;i++){
+		do{
+			x1=t1/x+r2(-3,3);
+			x2=t2/x+r2(-3,3);
+			v=x1+" / "+x2;
+console.log("v="+v);	
+		}while(
+			rasp.indexOf(v)!=-1
+			||
+			x1/x2==t1/t2
+			);
+		rasp.push(v);
+	}
+	console.log("rasp="+rasp);
+
+	loc=[];
+	asigneazaLOCvariante();	
+	
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+
+}
+function factorComun(){
+	// 32+24
+	// 8(4+3) 
+	
+	var x=r2(2,10);
+	var t1=x*r2(1,10);
+	var t2=x*r2(1,10);
+	var semn=ra(["+","-"]);
+	var q=t1+semn+t2;
+console.log(111);	
+	//rasp corect si e adaugat laindex 0 in arrayul [rasp]
+	rasp=[x+"*("+(t1/x)+semn+(t2/x)+")"];
+	//alege raspunsuri alternative
+	var v;
+	for (var i=0;i<2;i++){
+		do{
+			v=(x+r2(-3,3)) +"*("+ (t1/x+r2(-3,3)) + ra("+","-") + (t2/x+r2(-3,3)) +")";
+console.log("v="+v);	
+		}while(rasp.indexOf(v)!=-1) 	;
+		rasp.push(v);
+	}
+	console.log("rasp="+rasp);
+
+	loc=[];
+	asigneazaLOCvariante();	
+	
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+
+}
+
+function identificaDivizorulLuiX(){
+	// Cu ce numar se divide 25?
+	// 5 3 7 9
+	var arrdiv=[2,3,4,5,6,9,10];//array de divizori
+	var t2=ra(arrdiv);
+	//alege raspunsuri alternative
+	rasp=[t2];//t2 e rasp corect si e adaugat laindex 0 in arrayul [rasp]
+	var v;
+	for (var i=0;i<3;i++){
+		do{
+			v=ra(arrdiv);
+		}while(	
+				( (t2%v)==0 )// daca v divide t2 (369 246 510)atunci cauta alta varianta
+				||
+				( (v%t2)==0 )// similar
+				||
+				rasp.indexOf(v)!=-1//ca sa nu fie variante duplicat
+				);
+		rasp.push(v);
+	}
+	console.log("rasp="+rasp);
+	loc=[];
+	asigneazaLOCvariante();	
+	var t1;
+	var j=0;
+console.log(111);
+	do{
+		if(j>995){console.log(222,turn,j);}
+		// printindiv("div1",j+"-----------) "+v);
+		if (j++>1000) break;
+		v=t2*r2(10,Math.floor(120/t2));//ca sa iasa un t1=v sub 1000
+	}while(true==test1());
+	function test1(){
+		for(var i=0;i<rasp.length;i++){
+			if(rasp[i]==t2)continue;
+			if((v%rasp[i])==0){return true;}//adica reia bucla
+		}
+		//daca a terminat for fara sa return true=adica sa reia bucla,atunci
+		return false;//adica nu mai relua bucla do while	
+	}
+	console.log("f()",j,v)
+	t1=v;
+	var q=t1+" este divizibil cu...";
+	
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+
+}
+
+
+function identificaNrDivizibilCuX(){
+	//care nr e divizibil cu 5?
+	// 7 325 99 623 772
+	var t1=ra([2,3,4,5,6,9,10,100,1000]);
+	var q="Care numar e divizibil cu "+t1+" ?";
+	var t2=t1*r2(10,99);
+	rasp=[t2];//t2 e rasp corect si e adaugat laindex 0 in arrayul [rasp]
+	var v;
+	for (var i=0;i<3;i++){
+		do{
+			v=r2(10,999);
+			if(t1==10){v=ra([1,5])*r2(10,99);}
+			if(t1==100){v=ra([1,10])*r2(10,99);}
+			if(t1==1000){v=ra([1,10,100])*r2(10,99);}
+		}while(	( (v%t1)==0 )// daca var aleasa e si ea divizibila cu t1 atunci cauta alta varianta
+				||
+				rasp.indexOf(v)!=-1);//ca sa nu fie variante duplicat
+		rasp.push(v);
+		console.log(v+"%"+t1+"="+v%t1);
+	}
+	loc=[];
+	asigneazaLOCvariante();
+	//alege ordinea in care sa afizeze var de rasp, stiind ca rasp[0] e cea corecta
+
+	//returneaza
+	return{
+		q:q,
+		rh:randCuVarianteDeRaspuns()
+	}
+	
+
+}
 
 
 function ecuatiiCuONecunoscuta(){
@@ -666,8 +1124,8 @@ function inmultiriPeCatOri7(){
 	//ex -2 - -4 = ?
 	// -+3 +- +-6  = n1s1n2
 	var t1,t2,t3;
-	t1=r2(2,10);
-	t2=r2(2,10);
+	t1=r2(2,12);
+	t2=r2(2,12);
 	t3=t1*t2;
 	var q;
 	q=t3+"= ? * "+t2;
@@ -931,6 +1389,42 @@ function ra(arr){
 }
 
 
+function afiseazaStatistici(){
+	//afisare statistici in "divStatistici"
+	
+	if (logRaspunsuri.length==0)return;
+	
+	var procentPerToate;
+	var procentPer10;
+	var len=logRaspunsuri.length;
+	var ttot=0,t10=0;
+	
+	for (var i=len-1;i>=0;i--){
+		ttot+=logRaspunsuri[i];
+		if(len>=10 && i>len-11){
+			t10+=logRaspunsuri[i];
+		}
+	}
+	
+	procentPerToate=(ttot/len*100).toFixed(0);
+	procentPer10=(t10/10*100).toFixed(0);
+	
+	var txt="";
+	//txt+=logRaspunsuri;
+	txt+="<br>Corectitudine raspunsuri<br>Pt. toate: "+procentPerToate+"%";
+	if(len>=10){
+		txt+="<br> Pt. ultimele zece: "+procentPer10+"%";
+	}	
+	
+	document.getElementById("divStatistici").innerHTML=txt;
+}
+
+
+
+function printindiv(div,txt){
+	document.getElementById(div+"").innerHTML=txt+"";
+}
+
 function operatorInvers(o){
 	switch(o){
 		case "+": return "-"; break;
@@ -951,5 +1445,19 @@ function removeDuplicates(arr){
 			//console.log(arr);
 		}
 	}
+}
+
+function cmmdc(t1,t2){
+	var min= (t1<t2 ? t1 : t2 ) ;//val celui mai mic dintre ci doi termeni t1 si t2
+	var cmmdc;//divizor comun
+	for(var i=1;i<=min;i++){
+		if(
+			t1%i==0
+			&&
+			t2%i==0
+		){cmmdc=i;}
+	}
+	console.log("cmmdc",t1,t2,cmmdc);
+	return cmmdc;//asta e cmmmdc
 }
 </script>
